@@ -1,0 +1,10 @@
+{
+  "projectname": "dsh-wx-preview-example",
+  "appid": "touristappid",
+  "miniprogramRoot": "miniprogram",
+  "compileType": "miniprogram",
+  "setting": {
+    "es6": true,
+    "minified": false
+  }
+}

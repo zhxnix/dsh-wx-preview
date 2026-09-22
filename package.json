@@ -1,0 +1,81 @@
+{
+  "name": "dsh-wx-preview",
+  "version": "0.1.0",
+  "description": "DSH plugin and local runtime for previewing native WeChat Mini Programs",
+  "type": "module",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "bin": {
+    "dsh-wx-preview": "scripts/cli.mjs"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./engine": "./lib/engine.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "src/",
+    "web/",
+    "scripts/cli.mjs",
+    "scripts/check.mjs",
+    "scripts/self-test.mjs",
+    "scripts/install.mjs",
+    "cordis.patch.yml",
+    "dsh.bundle.patch",
+    "tests/",
+    "examples/",
+    "skills/",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web"
+    },
+    "bundle": {
+      "patch": "./dsh.bundle.patch"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "^0.1.5-rc.2"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "htmlparser2": "^12.0.0",
+    "postcss": "^8.5.26",
+    "vite": "^8.2.2"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "self-test": "node scripts/self-test.mjs",
+    "test": "npm run check && npm run self-test",
+    "prepack": "node scripts/check.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhxnix/dsh-wx-preview.git"
+  },
+  "homepage": "https://github.com/zhxnix/dsh-wx-preview#readme",
+  "bugs": {
+    "url": "https://github.com/zhxnix/dsh-wx-preview/issues"
+  },
+  "author": "zhxnix",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "wechat",
+    "mini-program",
+    "preview",
+    "debug"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

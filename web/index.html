@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f9d78'/%3E%3Cpath d='M17 18h30v8H25v7h18v8H25v13h-8z' fill='white'/%3E%3C/svg%3E" />
+    <title>DSH 微信小程序预览</title>
+  </head>
+  <body>
+    <div id="preview-app">
+      <header class="preview-toolbar">
+        <div class="preview-brand">
+          <span class="preview-live-dot" aria-hidden="true"></span>
+          <span>DSH 小程序预览</span>
+        </div>
+        <label class="preview-route-label">
+          <span>页面</span>
+          <select id="preview-route" aria-label="选择预览页面"></select>
+        </label>
+        <div class="preview-actions">
+          <button id="preview-back" type="button" title="返回上一页">←</button>
+          <button id="preview-reload" type="button" title="重新加载当前页面">↻</button>
+          <button id="preview-debug-toggle" type="button" aria-expanded="false">调试 <span id="preview-error-count">0</span></button>
+        </div>
+      </header>
+      <div class="preview-meta">
+        <span id="preview-project-badge">读取项目…</span>
+        <span id="preview-identity-badge">读取身份…</span>
+        <span id="preview-compatibility-badge">兼容性扫描…</span>
+        <span>iPhone 12/13 · 390×844</span>
+        <span id="preview-current-route">准备中…</span>
+      </div>
+      <main class="preview-stage">
+        <section class="preview-device" aria-label="小程序画面">
+          <div id="miniprogram-root" class="miniprogram-root"></div>
+          <div class="preview-system-ui" aria-hidden="true">
+            <div class="preview-notch"></div>
+            <time id="preview-status-time" class="preview-status-time">12:13</time>
+            <div class="preview-status-icons">
+              <span class="preview-cellular"><i></i><i></i><i></i><i></i></span>
+              <span class="preview-wifi"></span>
+              <span class="preview-battery"></span>
+            </div>
+            <div class="preview-menu-capsule">
+              <span class="preview-menu-dots"><i></i><i></i><i></i></span>
+              <span class="preview-menu-divider"></span>
+              <span class="preview-menu-close"></span>
+            </div>
+            <div class="preview-home-indicator"></div>
+          </div>
+          <div id="preview-toast" class="preview-toast" hidden></div>
+          <div id="preview-loading" class="preview-loading" hidden>
+            <span class="preview-spinner" aria-hidden="true"></span>
+            <span id="preview-loading-text">加载中…</span>
+          </div>
+          <div id="preview-modal-root"></div>
+        </section>
+      </main>
+      <aside id="preview-debug-panel" class="preview-debug-panel" hidden>
+        <div class="preview-debug-head">
+          <strong>运行时日志</strong>
+          <button id="preview-debug-clear" type="button">清空</button>
+        </div>
+        <ol id="preview-debug-list"></ol>
+      </aside>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

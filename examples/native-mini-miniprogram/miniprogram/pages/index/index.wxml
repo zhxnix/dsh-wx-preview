@@ -1,0 +1,8 @@
+<view class="page">
+  <view class="card">
+    <text class="eyebrow">DSH WX PREVIEW</text>
+    <text class="title">原生小程序预览</text>
+    <text class="message">{{message}}</text>
+    <button id="counter" bindtap="increment">点击次数：{{count}}</button>
+  </view>
+</view>

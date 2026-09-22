@@ -1,0 +1,5 @@
+# DSH bundle patch. Installers that use Cordis profile patches can use the
+# same entry from cordis.patch.yml.
+- insert:
+    - id: dsh-wx-preview
+      name: dsh-wx-preview

@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "DSH 预览示例",
+    "navigationBarBackgroundColor": "#f4f8f5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f4f8f5"
+  }
+}
