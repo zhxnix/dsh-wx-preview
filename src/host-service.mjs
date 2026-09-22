@@ -176,10 +176,11 @@ export function createPreviewService() {
       const session = conversationId
         ? (mappedId ? sessions.get(mappedId) : null)
         : (lastSessionId ? sessions.get(lastSessionId) : null);
-      if (!session) return { active: false, sessionId: null, url: '' };
+      if (!session) return { active: false, sessionId: null, conversationId: conversationId || null, url: '' };
       return {
         active: true,
         sessionId: session.id,
+        conversationId: conversationId || null,
         url: session.url,
         project: {
           id: session.project.id,

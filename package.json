@@ -1,6 +1,6 @@
 {
   "name": "dsh-wx-preview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH plugin and local runtime for previewing native WeChat Mini Programs",
   "type": "module",
   "license": "MIT",

@@ -2,7 +2,7 @@
 
 `dsh-wx-preview` is a portable DSH plugin for discovering, precompiling, opening, and debugging native WeChat Mini Programs. It reads `project.config.json` and `app.json` from the project supplied by the caller, starts a local browser-compatible runtime, and exposes the preview in the DSH right sidebar.
 
-The package has no Passlogy dependency, fixed project path, fixed port, or machine-specific username. Source projects are read-only. Generated preview state is stored below `DSH_WX_PREVIEW_HOME` (by default `~/.dsh-wx-preview`).
+The package has no business-project dependency, fixed project path, fixed port, or machine-specific username. Source projects are read-only. Generated preview state is stored below `DSH_WX_PREVIEW_HOME` (by default `~/.dsh-wx-preview`).
 
 It provides the DSH tools `wxpreview_discover`, `wxpreview_precompile`, `wxpreview_open`, `wxpreview_status`, `wxpreview_logs`, `wxpreview_update_identity`, and `wxpreview_stop`. When `dsh-sidebar-annotations` is installed, the panel uses its shared `BrowserPanel` with `panelKind: "dsh-wx-preview"`; element comments, context comments, console inspection, and DevTools can then use the same sidebar workflow as web pages. Without that optional plugin, a basic standalone iframe preview remains available.
 
@@ -10,16 +10,15 @@ Every DOM element rendered from WXML receives `data-dsh-source-file`, `data-dsh-
 
 ## Install
 
-Search for `DSH WX Preview` in the DSH Plugin Market. The catalog is maintained by
-[awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin), and the
-market installs the prebuilt package from this repository's GitHub Release. The CLI form is:
+Market catalog submission is in progress. The current installation path is the prebuilt package from this repository's GitHub Release; the entry is planned for
+[awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin). Non-managed profiles can use the DSH CLI:
 
 ```sh
-dsh plugin --profile desktop add \
+dsh plugin --profile web add \
   https://github.com/zhxnix/dsh-wx-preview/releases/latest/download/dsh-wx-preview.tgz
 ```
 
-Replace `desktop` with the profile you use. Restart DSH and open a new session after installing.
+Replace `web` with the non-managed profile you use. DSH Desktop's managed `desktop` profile should use this repository's checkout installer instead. Restart DSH and open a new session after installing.
 The optional annotation plugin can be installed and updated separately.
 
 For a checkout-based install:
@@ -28,9 +27,12 @@ For a checkout-based install:
 git clone https://github.com/zhxnix/dsh-wx-preview.git
 cd dsh-wx-preview
 npm install
+node scripts/install.mjs --profile desktop
 ```
 
-Add this entry to the DSH profile's `cordis.patch.yml`, adjusting the path to the checkout:
+Remove it with `node scripts/install.mjs --uninstall --profile desktop`; the installer only touches this plugin's link and marked loader block.
+
+If you do not use the installer, add this entry manually to the DSH profile's `cordis.patch.yml` (choose one method; adjust the path to the checkout):
 
 ```yaml
 - insert:

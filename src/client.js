@@ -32,6 +32,16 @@ window.__ModuleLoader__.load({
       return sessionId ? `${CONFIG_PATH}?sessionId=${encodeURIComponent(sessionId)}` : CONFIG_PATH;
     }
 
+    function useDshSession() {
+      const store = window.__dshWxPreviewSessionStore;
+      const empty = React.useMemo(() => ({
+        getSnapshot: () => '',
+        subscribe: () => () => {}
+      }), []);
+      const source = store || empty;
+      return React.useSyncExternalStore(source.subscribe, source.getSnapshot, source.getSnapshot);
+    }
+
     function safePreviewUrl(value) {
       const text = String(value || '').trim();
       if (!text) return '';
@@ -47,10 +57,12 @@ window.__ModuleLoader__.load({
       const [config, setConfig] = React.useState(() => ({
         active: Boolean(initialUrl),
         sessionId: null,
+        conversationId: sessionId || null,
         url: initialUrl || ''
       }));
       React.useEffect(() => {
         let disposed = false;
+        setConfig({ active: Boolean(initialUrl), sessionId: null, conversationId: sessionId || null, url: initialUrl || '' });
         const read = async () => {
           try {
             const response = await fetch(configUrl(sessionId), { cache: 'no-store' });
@@ -72,11 +84,14 @@ window.__ModuleLoader__.load({
       const [frameUrl, setFrameUrl] = React.useState(safePreviewUrl(config.url || initialUrl || ''));
       React.useEffect(() => {
         const next = safePreviewUrl(config.url);
-        if (next && next !== frameUrl) {
+        if (!config.active || !next) {
+          setUrl('');
+          setFrameUrl('');
+        } else if (next !== frameUrl) {
           setUrl(next);
           setFrameUrl(next);
         }
-      }, [config.url]);
+      }, [config.active, config.url, config.sessionId, sessionId]);
       return h('section', { style: { display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, background: 'var(--dsw-alias-surface-secondary, #181818)', color: 'var(--dsw-alias-label-primary, #eee)' }, 'data-dsh-wx-preview': true },
         h('form', { onSubmit: (event) => { event.preventDefault(); const next = safePreviewUrl(url); if (next) { setUrl(next); setFrameUrl(next); } }, style: { display: 'flex', gap: 6, padding: 8, borderBottom: '1px solid #ffffff18' } },
           h('input', { value: url, onChange: (event) => setUrl(event.target.value), placeholder: '预览地址（由 wxpreview_open 自动填入）', spellCheck: false, style: { minWidth: 0, flex: 1, color: 'inherit', background: '#ffffff0a', border: '1px solid #ffffff22', borderRadius: 6, padding: '6px 8px' } }),
@@ -88,15 +103,16 @@ window.__ModuleLoader__.load({
 
     function MiniProgramPanel(props) {
       const SharedBrowserPanel = React.useSyncExternalStore(subscribeShared, sharedPanel, sharedPanel);
-      const currentSession = typeof window.__dshWxPreviewCurrentSession === 'function'
-        ? window.__dshWxPreviewCurrentSession()
-        : '';
-      const config = usePreviewConfig(props.defaultUrl || '', props.sessionId || currentSession);
-      const url = config.url || props.defaultUrl || '';
-      if (!SharedBrowserPanel) return h(BasicPreview, { initialUrl: url, sessionId: props.sessionId || currentSession });
+      const currentSession = useDshSession();
+      const sessionId = props.sessionId || currentSession;
+      const config = usePreviewConfig(props.defaultUrl || '', sessionId);
+      const configMatches = !sessionId || config.conversationId === null || config.conversationId === sessionId;
+      const url = configMatches && config.active ? (config.url || props.defaultUrl || '') : '';
+      if (!SharedBrowserPanel || !configMatches || !config.active || !url) return h(BasicPreview, { key: `${PANEL_KIND}:${sessionId}`, initialUrl: url, sessionId });
       return h(SharedBrowserPanel, {
         ...props,
-        key: `${PANEL_KIND}:${config.sessionId || url}`,
+        key: `${PANEL_KIND}:${sessionId}`,
+        sessionId,
         panelKind: PANEL_KIND,
         defaultUrl: url
       });
@@ -142,13 +158,17 @@ window.__ModuleLoader__.load({
         const timer = setInterval(poll, 2000);
         return () => { disposed = true; clearInterval(timer); };
       });
-      const previous = window.__dshWxPreviewCurrentSession;
-      window.__dshWxPreviewCurrentSession = () => {
-        try { return ctx.sessions?.list?.getSnapshot?.().current || ''; } catch (_) { return ''; }
+      const previousStore = window.__dshWxPreviewSessionStore;
+      const sessionList = ctx.sessions?.list;
+      const sessionStore = {
+        getSnapshot: () => sessionList?.getSnapshot?.().current || '',
+        subscribe: (listener) => sessionList?.subscribe?.(listener) || (() => {})
       };
+      window.__dshWxPreviewSessionStore = sessionStore;
       ctx.effect(() => () => {
-        if (window.__dshWxPreviewCurrentSession === previous || previous === undefined) delete window.__dshWxPreviewCurrentSession;
-        else window.__dshWxPreviewCurrentSession = previous;
+        if (window.__dshWxPreviewSessionStore !== sessionStore) return;
+        if (previousStore) window.__dshWxPreviewSessionStore = previousStore;
+        else delete window.__dshWxPreviewSessionStore;
       });
       void fetch('/dsh-wx-preview/health', {
         method: 'POST',

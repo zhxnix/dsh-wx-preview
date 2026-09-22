@@ -2,7 +2,7 @@
 
 `dsh-wx-preview` 是一个可移植的 DSH 插件，用于发现、预编译、打开和调试原生微信小程序项目。它读取用户指定目录中的 `project.config.json` 与 `app.json`，在本机启动浏览器兼容预览运行时，并把预览页放进 DSH 右侧栏。
 
-它不依赖 Passlogy、固定端口、固定项目目录或用户目录；每次打开都使用工具参数传入的项目路径。目标项目源码只读，预览缓存写入独立的 `DSH_WX_PREVIEW_HOME` 目录（默认 `~/.dsh-wx-preview`）。
+它不依赖特定业务项目、固定端口、固定项目目录或用户目录；每次打开都使用工具参数传入的项目路径。目标项目源码只读，预览缓存写入独立的 `DSH_WX_PREVIEW_HOME` 目录（默认 `~/.dsh-wx-preview`）。
 
 ## 能做什么
 
@@ -18,27 +18,29 @@
 
 ## 安装和加载
 
-在 DSH 插件市场中搜索 `DSH WX Preview` 即可安装。市场条目来自
-[awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)，并使用本仓库
-GitHub Release 的预构建包。也可以直接使用 DSH CLI：
+市场收录申请中，当前可以从 GitHub Release 安装预构建包。条目计划提交到
+[awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)。非 managed profile 可使用 DSH CLI：
 
 ```sh
-dsh plugin --profile desktop add \
+dsh plugin --profile web add \
   https://github.com/zhxnix/dsh-wx-preview/releases/latest/download/dsh-wx-preview.tgz
 ```
 
-将 `desktop` 换成你实际使用的 profile。安装后重启 DSH，并新建一个 session。
+将 `web` 换成你实际使用的非 managed profile。DSH Desktop 的 managed `desktop` profile 请使用本仓库提供的 checkout 安装器；安装后重启 DSH，并新建一个 session。
 若同时安装 `dsh-sidebar-annotations`，建议先加载注释插件，再加载本插件；本插件会监听共享面板的热更新事件，二者可以独立升级。
 
-不方便使用市场时，可以从 checkout 加载：
+DSH Desktop 请从 checkout 安装：
 
 ```sh
 git clone https://github.com/zhxnix/dsh-wx-preview.git
 cd dsh-wx-preview
 npm install
+node scripts/install.mjs --profile desktop
 ```
 
-在 DSH profile 的 `cordis.patch.yml` 中加入下面的条目（路径按实际 checkout 位置调整）：
+卸载时运行 `node scripts/install.mjs --uninstall --profile desktop`；安装器只处理本插件的链接和带标记的 loader 条目。
+
+如果不使用上面的安装器，才手动在 DSH profile 的 `cordis.patch.yml` 中加入下面的条目（二选一，路径按实际 checkout 位置调整）：
 
 ```yaml
 - insert:

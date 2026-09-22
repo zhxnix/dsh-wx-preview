@@ -41,13 +41,20 @@ function templateAst(source, file, sourceRoot) {
     lowerCaseTags: false,
     withStartIndices: true
   });
+  const lineStarts = [0];
+  for (let cursor = 0; cursor < source.length; cursor += 1) {
+    if (source.charCodeAt(cursor) === 10) lineStarts.push(cursor + 1);
+  }
   const lineAt = (index) => {
     if (!Number.isInteger(index) || index < 0) return undefined;
-    let line = 1;
-    for (let cursor = 0; cursor < index; cursor += 1) {
-      if (source.charCodeAt(cursor) === 10) line += 1;
+    let low = 0;
+    let high = lineStarts.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (lineStarts[middle] <= index) low = middle + 1;
+      else high = middle;
     }
-    return line;
+    return low;
   };
   const serialize = (node) => {
     if (node.type === 'text') return { type: 'text', value: node.data || '' };
