@@ -20,7 +20,8 @@ const files = [
   'web/main.js',
   'web/runtime.js',
   'scripts/cli.mjs',
-  'scripts/self-test.mjs'
+  'scripts/self-test.mjs',
+  'scripts/install.mjs'
 ];
 for (const relative of files) {
   const file = path.join(root, relative);

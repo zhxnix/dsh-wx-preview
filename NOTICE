@@ -2,13 +2,11 @@ DSH WX Preview is distributed under the MIT License for the original plugin
 integration, generic host service, browser panel, documentation, examples,
 and changes made in this repository.
 
-The initial preview engine was adapted from the local wxpreview package found
-in the DSH development environment at the time this repository was created.
-That source directory contained no LICENSE, NOTICE, copyright header, or
-repository metadata. Its redistribution status must be confirmed with the
-original author before making a public release. The package is kept separate
-from the existing local wxpreview installation and does not claim ownership
-of third-party dependencies.
+The initial preview engine was adapted from the local wxpreview package. The
+original package identifies zhao as its author/developer; zhao authorized this
+repository to release the adapted engine under the MIT License. The package
+is kept separate from the existing local wxpreview installation and does not
+claim ownership of third-party dependencies.
 
 Each dependency remains under its own license. See the dependency metadata
 installed by npm for the complete notices.

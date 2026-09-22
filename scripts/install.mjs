@@ -75,7 +75,7 @@ async function install(profile) {
     console.log(`Linked ${PLUGIN_ID} into ${profile}`);
   }
   const patch = await readOrEmpty(patchPath);
-  if (patch.includes(START) || new RegExp(`id:\s*${PLUGIN_ID}`).test(patch)) {
+  if (patch.includes(START) || new RegExp(`id:\\s*${PLUGIN_ID}`).test(patch)) {
     console.log(`Profile already loads ${PLUGIN_ID}`);
   } else {
     await writeFile(patchPath, addBlock(patch), 'utf8');

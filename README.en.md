@@ -75,4 +75,4 @@ The local identity and permission values are fixtures. The plugin never performs
 
 New DSH integration code, session management, examples, and documentation in this repository are MIT licensed. See [`LICENSE`](./LICENSE).
 
-The initial generic preview engine was extracted from a local `wxpreview` directory. That directory contained no root license, notice, copyright header, or Git metadata at extraction time. Redistribution of that portion must be confirmed with its original author before a public release; the situation is documented in [`NOTICE`](./NOTICE). Dependencies keep their own licenses.
+The initial generic preview engine was adapted from the local `wxpreview` package, originally authored by zhao, with authorization to release the adapted version here under the MIT License. See [`NOTICE`](./NOTICE) for provenance. Dependencies keep their own licenses.
